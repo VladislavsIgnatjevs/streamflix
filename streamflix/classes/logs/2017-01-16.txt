@@ -1,0 +1,38 @@
+Time : 22:00:08
+SQLSTATE[HY000] [2003] Can't connect to MySQL server on 'mysqldb' (113)
+
+Time : 21:59:57
+SQLSTATE[HY000] [2005] Unknown MySQL server host 'mysqldb:6603' (74)
+
+Time : 21:59:04
+SQLSTATE[HY000] [2003] Can't connect to MySQL server on 'mysqldb' (113)
+
+Time : 20:42:17
+SQLSTATE[HY000] [1130] Host '172.17.0.6' is not allowed to connect to this MySQL server
+
+Time : 20:41:58
+SQLSTATE[HY000] [2005] Unknown MySQL server host '0.0.0.0:3306' (74)
+
+Time : 20:35:19
+SQLSTATE[HY000] [2005] Unknown MySQL server host '0.0.0.0:3306' (74)
+
+Time : 20:34:11
+SQLSTATE[HY000] [2005] Unknown MySQL server host 'db:3306' (74)
+
+Time : 20:31:01
+SQLSTATE[HY000] [2002] Can't connect to local MySQL server through socket '/var/run/mysqld/mysqld.sock' (2)
+
+Time : 20:30:58
+SQLSTATE[HY000] [2002] Can't connect to local MySQL server through socket '/var/run/mysqld/mysqld.sock' (2)
+
+Time : 20:25:00
+SQLSTATE[HY000] [2002] Can't connect to local MySQL server through socket '/var/run/mysqld/mysqld.sock' (2)
+
+Time : 20:24:51
+SQLSTATE[HY000] [2003] Can't connect to MySQL server on '0.0.0.0' (111)
+
+Time : 20:24:46
+SQLSTATE[HY000] [2005] Unknown MySQL server host '0.0.0.0:3306' (74)
+
+Time : 20:24:04
+SQLSTATE[HY000] [2005] Unknown MySQL server host 'localhost:3306' (74)

@@ -1,0 +1,9 @@
+mysql server
+centurylink/mysql
+docker run -it -v /Volumes/Data/MSc\  Stuff/DEVOPS/db/files:/var/lib/mysql --name streamflix-mysql-server -p 3306:3306 -e MYSQL_ROOT_PASSWORD=admin -e MYSQL_DATABASE=streamflix-db --publish 6603:3306 centurylink/mysql
+
+php myadmin:
+docker run --name streamflix_admin -d --link streamflix-mysql-server:db -p 8080:80 phpmyadmin/phpmyadmin
+
+PHP server nginx
+docker run --name mywebapp -d -P -v /Volumes/Data/MSc\ Stuff/DEVOPS/streamflix-docker/streamflix:/var/www/html --link streamflix-mysql-server:mysqldb  vutran/docker-nginx-php5-fpm
