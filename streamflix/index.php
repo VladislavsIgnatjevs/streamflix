@@ -5,11 +5,66 @@
  * Date: 15/01/2017
  * Time: 23:16
  */
+error_reporting(E_ALL);
+ini_set('display_errors', 'on');
+require_once('core/include/header.inc.php');
+
+
+
+$errors = [];
+$showerrors = false;
 
 
 
 
 
+
+if (!empty($_REQUEST['login-submit'])){
+    $username = $_REQUEST['username'];
+    $password = $_REQUEST['password'];
+    $remember = $_REQUEST['remember'];
+
+    $user = new User();
+    if ($user->validateUser($username,$password)){
+        var_dump('user valid');
+    }
+
+
+
+}
+
+if (!empty($_REQUEST['register-submit'])){
+    $username = $_REQUEST['username'];
+    $password = $_REQUEST['password'];
+    $password_confirm = $_REQUEST['confirm-password'];
+    $email = $_REQUEST['email'];
+
+    //check if user like this exists
+    $user = new User();
+    if ($user->isUser($username)) {
+        $errors['user_exists'] = 'Sorry, this username is already taken. Take a moment and think about some other ones';
+    }
+    if (!$user->passwordStrong($password)) {
+        $errors['weak_password'] = 'Please make sure that your password contains atleast one number and at least one letter and
+    is in the length between 8-50 characters. The following special characters are allowed: !@#$% .';
+
+    }
+    if (!$user->passwordsMatch($password,$password_confirm)) {
+        $errors['pass_mismatch'] = 'The password you entered mismatch. ';
+    }
+
+
+    if (empty($errors)) {
+        //encrypt password
+
+        //register user
+        var_dump($user->registerUser($username,$email,$password));
+
+    } else {
+        $showerrors = true;
+        var_dump($errors);
+    }
+}
 
 
 
@@ -19,7 +74,7 @@ include('core/include/header.html.php');
 
 ?>
 
-<link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css">
+
 
 <div class="container">
     <div class="row">
@@ -83,10 +138,6 @@ include('core/include/header.html.php');
         </div>
     </div>
 </div>
-<footer>
-    <div class="container">
-        <div class="col-md-10 col-md-offset-1 text-center">
-            <h6 style="font-size:14px;font-weight:100;color: #fff;">Coded with <i class="fa fa-heart red" style="color: #BC0213;"></i> by <a href="http://hashif.com" style="color: #fff;" target="_blank">Hashif</a></h6>
-        </div>
-    </div>
-</footer>
+
+<?php
+include('core/include/footer.html.php');

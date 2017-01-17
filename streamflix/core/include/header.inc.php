@@ -6,5 +6,6 @@
  * Time: 21:08
  */
 
-$path = '../../';
-require($path . "classes/Db.php");
+require("classes/Db.php");
+require("classes/User.php");
+require("classes/Video.php");

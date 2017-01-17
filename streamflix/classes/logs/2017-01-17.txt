@@ -1,0 +1,7 @@
+Time : 01:47:45
+SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '?, ?, ?, ?' at line 1
+Raw SQL : INSERT INTO `users` (`username`, `email`, `password`, `salt`) VALUES :username, :email, :password, :salt
+
+Time : 01:44:15
+SQLSTATE[HY093]: Invalid parameter number: parameter was not defined
+Raw SQL : SELECT `username` FROM `users` WHERE `username` = :username LIMIT 1
