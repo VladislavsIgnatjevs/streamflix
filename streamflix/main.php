@@ -142,32 +142,32 @@ require_once 'core/include/header.html.php';
         </div>
     </div>
 
-    <div class="container text-center">
+    <div class="container text-center footer-streamflix">
         <hr/>
         <div class="row">
             <div class="col-lg-12">
                 <div class="col-md-3">
                     <ul class="nav nav-pills nav-stacked">
-                        <li><a href="#">About us</a></li>
-                        <li><a href="#">Blog</a></li>
+                        <li><a href="/main.php">Home</a></li>
+                        <li><a href="https://github.com/VladislavsIgnatjevs">About us</a></li>
                     </ul>
                 </div>
                 <div class="col-md-3">
                     <ul class="nav nav-pills nav-stacked">
-                        <li><a href="#">Product for Mac</a></li>
-                        <li><a href="#">Product for Windows</a></li>
-                    </ul>
-                </div>
-                <div class="col-md-3">
-                    <ul class="nav nav-pills nav-stacked">
-                        <li><a href="#">Web analytics</a></li>
+                        <li><a href="mailto:v.ignatjevs@dundee.ac.ru">Contact</a></li>
                         <li><a href="#">Presentations</a></li>
                     </ul>
                 </div>
                 <div class="col-md-3">
                     <ul class="nav nav-pills nav-stacked">
-                        <li><a href="#">Product Help</a></li>
-                        <li><a href="#">Developer API</a></li>
+                        <li><a href="https://hub.docker.com/r/vignatjevs/streamflix/">Docker Hub</a></li>
+                        <li><a href="https://github.com/VladislavsIgnatjevs/streamflix">GitHub</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-3">
+                    <ul class="nav nav-pills nav-stacked">
+                        <li><a href="https://hub.docker.com/r/vignatjevs/streamflix/">Docker Hub</a></li>
+                        <li><a href="https://github.com/VladislavsIgnatjevs/streamflix">GitHub</a></li>
                     </ul>
                 </div>
             </div>

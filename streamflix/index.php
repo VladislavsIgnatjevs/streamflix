@@ -24,7 +24,7 @@ if (!empty($_REQUEST['login-submit'])){
     if ($user->validateUser($username,$password)){
         $user->getUser($username);
         $user->loginUser($user->username,$user->id, $remember);
-        header('Location: videos_main.php');
+        header('Location: main.php');
     } else {
         $errors['bad_user'] = 'User details are not recognized. Please try again using different credentials';
     }
@@ -94,7 +94,8 @@ include('core/include/header.html.php');
                     <div class="row">
                         <div class="col-lg-12">
                             <form id="login-form" action="#" method="post" role="form" style="display: block;">
-                                <h2>LOGIN</h2>
+                                <div id="logo-main"><h1 class="streamflix-logo"><b>Stream</b>Flix.</h1></div>
+                                <h2>Login</h2>
                                 <div class="form-group">
                                     <input type="text" name="username" id="username" tabindex="1" class="form-control" placeholder="Username" value="">
                                 </div>
@@ -110,7 +111,8 @@ include('core/include/header.html.php');
                                 </div>
                             </form>
                             <form id="register-form" action="#" method="post" role="form" style="display: none;">
-                                <h2>REGISTER</h2>
+                                <h1 class="streamflix-logo"><b>Stream</b>Flix.</h1>
+                                <h2>Sign Up</h2>
                                 <div class="form-group">
                                     <input type="text" name="username" id="username" tabindex="1" class="form-control" placeholder="Username" value="">
                                 </div>
@@ -140,7 +142,7 @@ include('core/include/header.html.php');
                             <a href="#" class="active" id="login-form-link"><div class="login">LOGIN</div></a>
                         </div>
                         <div class="col-xs-6 tabs">
-                            <a href="#" id="register-form-link"><div class="register">REGISTER</div></a>
+                            <a href="#" id="register-form-link"><div class="register">SIGN UP</div></a>
                         </div>
                     </div>
                 </div>

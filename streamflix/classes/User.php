@@ -225,7 +225,7 @@ class User
 
             if (hash_equals($row['token'], hash('sha256', base64_decode($authenticator)))) {
                 $_SESSION['userid'] = $row['userid'];
-                header('Location: /videos_main.php');
+                header('Location: /main.php');
             } else {
                 header('Location: /index.php');
             }

@@ -16,5 +16,5 @@ require_once "classes/Video.php";
 
 $user = new User();
 if ($user->checkLogin()) {
-    header('Location: /videos_main.php');
+    header('Location: /main.php');
 }
