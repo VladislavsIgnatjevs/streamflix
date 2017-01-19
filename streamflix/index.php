@@ -5,16 +5,12 @@
  * Date: 15/01/2017
  * Time: 23:16
  */
-error_reporting(E_ALL);
-ini_set('display_errors', 'on');
-require_once('core/include/header.inc.php');
+
+require_once 'core/include/header.inc.php';
 
 
 
-$errors = [];
 $showerrors = false;
-
-
 
 
 
@@ -26,7 +22,11 @@ if (!empty($_REQUEST['login-submit'])){
 
     $user = new User();
     if ($user->validateUser($username,$password)){
-        var_dump('user valid');
+        $user->getUser($username);
+        $user->loginUser($user->username,$user->id, $remember);
+        header('Location: videos_main.php');
+    } else {
+        $errors['bad_user'] = 'User details are not recognized. Please try again using different credentials';
     }
 
 
@@ -58,12 +58,18 @@ if (!empty($_REQUEST['register-submit'])){
         //encrypt password
 
         //register user
-        var_dump($user->registerUser($username,$email,$password));
+        $user->registerUser($username,$email,$password);
 
-    } else {
-        $showerrors = true;
-        var_dump($errors);
+        $user->getUser($username);
+        $user->loginUser($user->username,$user->id);
+        header('Location: videos_main.php');
+
+
     }
+}
+
+if (!empty($errors)) {
+    $showerrors = true;
 }
 
 
@@ -73,6 +79,10 @@ if (!empty($_REQUEST['register-submit'])){
 include('core/include/header.html.php');
 
 ?>
+
+
+    <link rel="stylesheet" href="/css/css_login_register.css">
+    <script src="/js/login_register.js"></script>
 
 
 
