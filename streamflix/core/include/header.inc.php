@@ -11,6 +11,9 @@
 require_once "classes/Db.php";
 require_once "classes/User.php";
 require_once "classes/Video.php";
+require_once "testclass.php";
+
+
 
 //var_dump($_SESSION);
 
