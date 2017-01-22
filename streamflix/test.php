@@ -8,14 +8,12 @@
 
 require_once 'core/include/header.inc.php';
 
-
-$testclass = new testclass();
-
-$tes = $testclass->get_url("videoserver/upload");
-
-$tes1 = opendir('videoserver/');
-
-var_dump($tes1);
+$videos = [];
 
 
 
+
+
+foreach ($videos as $vid) {
+    echo $vid;
+}

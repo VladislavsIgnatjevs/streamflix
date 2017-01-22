@@ -1,9 +1,13 @@
 mysql server
 centurylink/mysql
-docker run -it -v /Volumes/Data/MSc\  Stuff/DEVOPS/db/files:/var/lib/mysql --name streamflix-mysql-server -p 3306:3306 -e MYSQL_ROOT_PASSWORD=admin -e MYSQL_DATABASE=streamflix-db --publish 6603:3306 centurylink/mysql
+docker run -d -v /Volumes/Data/MSc\  Stuff/DEVOPS/db/files:/var/lib/mysql --name streamflix-mysql-server -p 3306:3306 -e MYSQL_ROOT_PASSWORD=admin -e MYSQL_DATABASE=streamflix-db --publish 6603:3306 centurylink/mysql
 
 php myadmin:
 docker run --name streamflix_admin -d --link streamflix-mysql-server:db -p 8080:80 phpmyadmin/phpmyadmin
 
 PHP server nginx
-docker run --name mywebapp -d -P -v /Volumes/Data/MSc\ Stuff/DEVOPS/streamflix-docker/streamflix:/var/www/html --link streamflix-mysql-server:mysqldb  vutran/docker-nginx-php5-fpm
+docker run --name streamflix -d -P -p 8082:80 -v /Volumes/Data/MSc\ Stuff/DEVOPS/streamflix-docker/streamflix:/var/www/html -v /Volumes/Data/MSc\ Stuff/DEVOPS/streamflix-docker/nginx-videoserver/mp4:/var/www/html/videos/mp4 -v /Volumes/Data/MSc\ Stuff/DEVOPS/streamflix-docker/nginx-videoserver/mp4pics:/var/www/html/videos/videopics  --link streamflix-mysql-server:mysqldb —link mongodb_streamflix:mongodb --link videoserv:videoserver vignatjevs/nginx-php5-fpm-xdebug-ffmpeg
+
+videoserver
+
+docker run -d -p 1935:1935 -p 80:80 --name videoserv -v /Volumes/Data/MSc\ Stuff/DEVOPS/streamflix-docker/nginx-videoserver/mp4:/var/mp4s -v /Volumes/Data/MSc\ Stuff/DEVOPS/streamflix-docker/nginx-videoserver/www:/var/www 0408c4af7079/usr/local/nginx-streaming/sbin/nginx

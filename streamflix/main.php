@@ -6,7 +6,37 @@
  * Time: 18:22
  */
 
+require_once 'core/include/header.inc.php';
+
 require_once 'core/include/header.html.php';
+
+//get videos
+$videos = [];
+foreach (new DirectoryIterator('videos/mp4') as $file) {
+    if ($file->isFile()) {
+
+        //only mp4s
+        if ($file->getExtension() == 'mp4') {
+            $videos[] = $file->getFilename() . "\n";
+        }
+    }
+}
+
+
+//$video = [
+//    'title' => 'vid',
+//    'description' => 'desc',
+//    'mongo' => 'yep',
+//];
+//
+//$connection = new MongoClient('mongodb');
+//$db = $connection->streamflixmongodb;
+//$collection = $db->createCollection('videos');
+//$collection->insert($video);
+
+
+
+
 ?>
 
 
@@ -92,55 +122,59 @@ require_once 'core/include/header.html.php';
 
         <div class="row form-group">
 
-            <div class="col-xs-12 col-md-6">
-                <div class="panel panel-default">
-                    <div class="panel-image">
-                        <img
-                            src="http://666a658c624a3c03a6b2-25cda059d975d2f318c03e90bcf17c40.r92.cf1.rackcdn.com/unsplash_52cd36aac6bed_1.JPG"
-                            class="panel-image-preview"/>
-                        <label for="toggle-4"></label>
-                    </div>
-                    <input type="checkbox" id="toggle-4" checked class="panel-image-toggle">
-                    <div class="panel-body">
-                        <h4>Show the Description by default!</h4>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed in lobortis nisl, vitae iaculis
-                            sapien. Phasellus ultrices gravida massa luctus ornare. Suspendisse blandit quam elit, eu
-                            imperdiet neque semper et.</p>
-                    </div>
-                    <div class="panel-footer text-center">
-                        <a href="#download"><span class="glyphicon glyphicon-download"></span></a>
-                        <a href="#facebook"><span class="fa fa-facebook"></span></a>
-                        <a href="#twitter"><span class="fa fa-twitter"></span></a>
-                        <a href="#share"><span class="glyphicon glyphicon-share-alt"></span></a>
-                    </div>
-                </div>
-            </div>
+            <?php
 
-            <div class="col-xs-12 col-md-6">
-                <div class="panel panel-default">
-                    <div class="panel-image">
-                        <img
-                            src="http://666a658c624a3c03a6b2-25cda059d975d2f318c03e90bcf17c40.r92.cf1.rackcdn.com/unsplash_52cd36aac6bed_1.JPG"
-                            class="panel-image-preview"/>
-                        <label for="toggle-4"></label>
-                    </div>
-                    <input type="checkbox" id="toggle-4" checked class="panel-image-toggle">
-                    <div class="panel-body">
-                        <h4>Show the Description by default!</h4>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed in lobortis nisl, vitae iaculis
-                            sapien. Phasellus ultrices gravida massa luctus ornare. Suspendisse blandit quam elit, eu
-                            imperdiet neque semper et.</p>
-                    </div>
-                    <div class="panel-footer text-center">
-                        <a href="#download"><span class="glyphicon glyphicon-download"></span></a>
-                        <a href="#facebook"><span class="fa fa-facebook"></span></a>
-                        <a href="#twitter"><span class="fa fa-twitter"></span></a>
-                        <a href="#share"><span class="glyphicon glyphicon-share-alt"></span></a>
+            foreach ($videos as $vid) {
+
+                $videofile = trim('videos/mp4/' . $vid);
+                $pic = str_replace('.mp4', '.jpg', $vid);
+                $picfile = trim('videos/videopics/' . $pic);
+
+                if (!file_exists($picfile)) {
+                    $video = new Video();
+                    $video->getVideoPic($videofile, $picfile);
+                    $frame = $video->frame;
+                } else {
+                    $frame = $picfile;
+                }
+
+                ?>
+
+                <div class="col-xs-12 col-md-6">
+                    <div class="panel panel-default">
+                        <div class="panel-image">
+                            <img
+                                src="<?= $frame ?>"
+                                class="panel-image-preview"/>
+                            <label for="toggle-4"></label>
+                        </div>
+                        <div class="panel-body">
+                            <h4><b>Video title</b> (03:00)</h4>
+                            <p>A love story about one young man and Docker</p>
+
+                            <p><a class="btn btn-primary btn-lg" href="video.php?video-id=1" role="button">Watch <span
+                                        class="glyphicon glyphicon-play-circle" aria-hidden="true"></span></a></p>
+                        </div>
+                        <div class="panel-footer text-center">
+                            <a href="https://www.facebook.com/sharer/sharer.php?u=https://hub.docker.com/r/vignatjevs/nginx-php5-fpm-xdebug-ffmpeg/"><span
+                                    class="fa fa-facebook"></span></a>
+                            <a href="https://twitter.com/home?status=https%3A//hub.docker.com/r/vignatjevs/nginx-php5-fpm-xdebug-ffmpeg/"><span
+                                    class="fa fa-twitter"></span></a>
+                        </div>
                     </div>
                 </div>
-            </div>
+
+                <?php
+            }
+            ?>
+
+
         </div>
+
+
     </div>
+
+    <!-- footer -->
 
     <div class="container text-center footer-streamflix">
         <hr/>
