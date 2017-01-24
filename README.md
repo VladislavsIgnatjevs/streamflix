@@ -1,14 +1,15 @@
 # streamflix
-DevOps assignment 2017/2017
+DevOps assignment 2016/2017
 
-StremFlix - dockerized streaming system
+StremFlix - dockerized streaming application
 
 consists of:
-[Ubuntu 14.04 LTS + NGINX + PHP5-FPM + xdebug + ffmpeg + composer + PHP-FFMpeg ](https://hub.docker.com/r/vignatjevs/nginx-php5-fpm-xdebug-ffmpeg/)
-[MongoDB ](https://hub.docker.com/r/tutum/mongodb/)
-[PHPMyAdmin ](https://hub.docker.com/r/phpmyadmin/phpmyadmin)
-[MySQL Server](https://hub.docker.com/r/centurylink/mysql)
-[NGINX+rtmp](https://hub.docker.com/r/vignatjevs/nginx-rtmp/)
+
+1. [Ubuntu 14.04 LTS + NGINX + PHP5-FPM + xdebug + ffmpeg + composer + PHP-FFMpeg ](https://hub.docker.com/r/vignatjevs/nginx-php5-fpm-xdebug-ffmpeg/)
+2. [MongoDB ](https://hub.docker.com/r/tutum/mongodb/)
+3. [PHPMyAdmin ](https://hub.docker.com/r/phpmyadmin/phpmyadmin)
+4. [MySQL Server](https://hub.docker.com/r/centurylink/mysql)
+5. [NGINX+rtmp](https://hub.docker.com/r/vignatjevs/nginx-rtmp/)
 
 
 To run the application, either pull the above and run the following:
