@@ -64,7 +64,7 @@ function getVideoPic($videofile,$picfile) {
 
 
     $video = $ffmpeg->open($videofile);
-    $frame = $video->frame(FFMpeg\Coordinate\TimeCode::fromSeconds(10))
+    $frame = $video->frame(FFMpeg\Coordinate\TimeCode::fromSeconds(5))
         ->save($picfile);
     $this->frame =  $picfile;
 }

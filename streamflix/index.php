@@ -10,8 +10,6 @@ require_once 'core/include/header.inc.php';
 
 
 
-$showerrors = false;
-
 
 
 
