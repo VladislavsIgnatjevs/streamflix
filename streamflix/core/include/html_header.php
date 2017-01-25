@@ -71,6 +71,7 @@
                                 <li><a href="/main.php"><i class="fa fa-play"></i> Explore</a></li>
                                 <li><a href="/main.php?featured=true"><i class="fa fa-star"></i> Featured</a></li>
                                 <li><a href="/main.php?favourites=true"><i class="fa fa-heart"></i> Loved</a></li>
+                                <li><a href="/upload.php"><i class="fa fa-cloud-upload"></i> Upload</a></li>
                             </ul>
 
                             <ul class="nav  navbar-nav navbar-right">

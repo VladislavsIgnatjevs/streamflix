@@ -159,18 +159,19 @@ class User
             return true;
         } else {
             return false;
+
         }
     }
 
     function loginUser($username, $id, $remember = false)
     {
-        session_start();
+
         $_SESSION['username'] = $username;
         $_SESSION['userid'] = $id;
         $_SESSION['remember'] = $remember;
-        if ($remember) {
-            $this->generateAuthenticationToken($id);
-        }
+//        if ($remember) {
+//            $this->generateAuthenticationToken($id);
+//        }
     }
 
     function logoutUser()

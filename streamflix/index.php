@@ -19,10 +19,11 @@ if (!empty($_REQUEST['login-submit'])){
     $remember = $_REQUEST['remember'];
 
     $user = new User();
+
     if ($user->validateUser($username,$password)){
         $user->getUser($username);
         $user->loginUser($user->username,$user->id, $remember);
-        header('Location: main.php');
+        header('Location: /main.php');
     } else {
         $errors['bad_user'] = 'User details are not recognized. Please try again using different credentials';
     }

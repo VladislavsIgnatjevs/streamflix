@@ -285,3 +285,54 @@ a:focus {
 
 }
 
+.videoplayer{
+    display: inline-block;
+    margin-left: 3px;
+
+}
+
+.childinner #views{
+    text-align: right;
+
+}
+.videopanel #like{
+    position:relative;
+
+}
+
+.panel-video {
+    width: 100%; /* Try setting this to 400px or something */
+    display: table;
+    border: 0;
+}
+.child {
+    display: table-cell;
+}
+.childinner {
+    margin-left: 25px;
+    /* Decorative .. */
+    min-height: 20px;
+}
+.child:first-child .childinner {
+    margin-left: 0;
+}
+
+.views h3{
+    text-align: right;
+
+}
+.likes {
+    float: right;
+}
+
+
+.likeBtn.highlight {
+    color: red;
+
+}
+
+#watch-button {
+    margin: auto;
+    top:50%;
+    left:35%;
+}

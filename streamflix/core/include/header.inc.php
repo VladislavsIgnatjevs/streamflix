@@ -12,14 +12,11 @@ require 'vendor/autoload.php';
 require_once "classes/Db.php";
 require_once "classes/User.php";
 require_once "classes/Video.php";
-//require_once "classes/MongoDb.php";
+require_once "classes/StreamflixMongo.php";
 require_once "core/include/functions.php";
 
-
-
-//var_dump($_SESSION);
-
+session_start();
 $user = new User();
-if ($user->checkLogin()) {
-    header('Location: /main.php');
+if (!$user->checkLogin() && !strpos($_SERVER['REQUEST_URI'],'index.php')) {
+    header('Location: /index.php');
 }

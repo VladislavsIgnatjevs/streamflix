@@ -37,12 +37,20 @@ class Video
 //        }
     }
 
-    function getVideoMeta($video) {
-        //get id
+    function getVideoDuration($video) {
+        $video = trim('videos/mp4/' . $video);
+        $bins = [
+            'ffmpeg.binaries'  => '/usr/bin/ffmpeg',
+            'ffprobe.binaries' => '/usr/bin/ffprobe',
+            'timeout'          => 3600, // The timeout for the underlying process
+            'ffmpeg.threads'   => 1,   // The number of threads that FFMpeg should use
+        ];
 
-        //generate picfile path
-
-
+        $ffprobe = FFMpeg\FFProbe::create($bins);
+        $duration = $ffprobe
+            ->format($video) // extracts file informations
+            ->get('duration');
+        return($duration);
     }
 
     function getVideoByID($id) {
@@ -68,6 +76,8 @@ function getVideoPic($videofile,$picfile) {
         ->save($picfile);
     $this->frame =  $picfile;
 }
+
+
 
 
 }

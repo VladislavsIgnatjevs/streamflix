@@ -13,7 +13,29 @@ include_once 'core/include/header.html.php';
 
 require_once 'core/include/html_header.php';
 
-var_dump($_REQUEST);
+
+if (!empty($_REQUEST['file_name']) && !empty($_REQUEST['video_title'])) {
+    $video_title = $_REQUEST['video_title'];
+    $filename = $_REQUEST['file_name'];
+    $description = $_REQUEST['video_description'];
+    $video = new Video();
+    $duration = $video->getVideoDuration($filename);
+    $url = $video->getVideoUrl($filename);
+
+    $video = [
+        'title' => $video_title,
+        'filename' => $filename,
+        'description' => $description,
+        'duration' => $duration,
+    ];
+
+    $mongo = new StreamflixMongo();
+    $mongo->selectCollection('videos');
+    $collection=$mongo->collection;
+    $collection->insert($video);
+
+
+}
 
 
 ?>
@@ -31,8 +53,15 @@ var_dump($_REQUEST);
 
     <form id="uploadVideoForm" name='uploadVideoForm' action="#" method="post" role="form">
         <h2>Upload video</h2>
+        <?php
+        if (!empty($_REQUEST['file_name']) && !empty($_REQUEST['video_title'])) {
+            ?>
+            <div class="alert alert-success" role="alert" id="success-upload">Congratulations, your video is uploaded!
+            </div>
+            <?php
+        }
+        ?>
 
-        <div class="alert alert-success" role="alert" id="success-upload" style="display: none"></div>
         <div class="alert alert-danger" role="alert" id="error-upload" style="display: none"></div>
 
         <h3>Video title</h3>

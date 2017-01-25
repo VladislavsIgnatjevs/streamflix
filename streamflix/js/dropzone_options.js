@@ -50,8 +50,6 @@ $(document).ready(function () {
     myDropzone.on("complete", function (file) {
         if (this.getUploadingFiles().length === 0 && this.getQueuedFiles().length === 0) {
             $('#error-upload').css('display','none');
-            $('#success-upload').css('display','block').text('Congratulations, your video is uploaded!');
-
             $('#video_title').val($('#title').val());
             $('#video_description').val($('#desc').val());
 

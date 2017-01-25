@@ -11,20 +11,31 @@ require_once 'core/include/header.inc.php';
 require_once 'core/include/header.html.php';
 
 
-if (empty($_REQUEST['video-id'])) {
-    header('Location: /main.php');
-}
+if (!empty($_REQUEST['video_id'])) {
+    //get video
+    $mongo = new StreamflixMongo();
+    $mongo->selectCollection('videos');
+    $collection = $mongo->collection;
+    $video = $collection->findOne(['_id' => new MongoId(trim($_REQUEST['video_id']))]);
+    $filename = $video['filename'];
+    $title = $video['title'];
+    $views = $video['views'];
+    $duration = gmdate("H:i:s", $video['duration']);
+    $description = $video['description'];
+    $pic = str_replace('.mp4', '.jpg', $filename);
+    if (empty($views)) {
+        $views = 1;
 
-//get videos
-$videos = [];
-foreach (new DirectoryIterator('videos/mp4') as $file) {
-    if ($file->isFile()) {
-
-        //only mp4s
-        if ($file->getExtension() == 'mp4') {
-            $videos[] = $file->getFilename() . "\n";
-        }
+        $collection->update(['_id' => new MongoId(trim($_REQUEST['video_id']))],['$set' => ['views'=>$views]]);
+    } else {
+        $views = $views+1;
+        $collection->update(['_id' => new MongoId(trim($_REQUEST['video_id']))],['$set' => ['views'=>$views]]);
     }
+
+
+} else {
+
+    header('Location: /main.php');
 }
 
 
@@ -38,6 +49,7 @@ foreach (new DirectoryIterator('videos/mp4') as $file) {
 
 <link href="http://vjs.zencdn.net/4.11/video-js.css" rel="stylesheet">
 <script src="http://vjs.zencdn.net/4.11/video.js"></script>
+<script src="js/likes.js"></script>
 
 <div class="wrapper">
     <div class="container">
@@ -110,96 +122,80 @@ foreach (new DirectoryIterator('videos/mp4') as $file) {
     <!-- videos -->
 
     <div class="container" style="margin-top:10px;">
-        <div class="row form-group">
 
-        </div>
 
-        <div class="row form-group">
+        <?php
 
-            <?php
 
-            $video = new Video();
+        ?>
 
-            ?>
 
-                <div class="col-xs-12 col-md-6">
-                    <div class="panel panel-default">
-                        <div class="panel-image">
+        <div class="panel panel-default">
 
-                            <video id="my_video_1" class="video-js vjs-default-skin" width="640px" height="267px"
-                                   controls preload="none" poster='pics/bbb.png'
-                                   data-setup='{ "aspectRatio":"640:267", "playbackRates": [1, 1.5, 2] }'>
-                                <source src="rtmp://0.0.0.0:1935/vod2/sampe.mp4" type='rtmp/mp4' />
-                                <!--<source src="http://vjs.zencdn.net/v/oceans.webm" type='video/webm' />-->
-                            </video>
-                        </div>
-                        <div class="panel-body">
-                            <h4><b>Video title</b> (03:00)</h4>
-                            <p>A love story about one young man and Docker</p>
-                        </div>
-                        <div class="panel-footer text-center">
-                            <a href="https://www.facebook.com/sharer/sharer.php?u=https://hub.docker.com/r/vignatjevs/nginx-php5-fpm-xdebug-ffmpeg/"><span class="fa fa-facebook"></span></a>
-                            <a href="https://twitter.com/home?status=https%3A//hub.docker.com/r/vignatjevs/nginx-php5-fpm-xdebug-ffmpeg/"><span class="fa fa-twitter"></span></a>
-                        </div>
+            <div class="panel-image">
+<!--                <video id="<?/* $_REQUEST['video_id'] */?>" class="video-js vjs-16b9 videoplayer" width="70%"
+                       height="auto"
+                       controls preload="auto" poster='videos/videopics/<?/*= $pic */?>'
+                       data-setup='{"fluid": true, "playbackRates": [1, 1.5, 2] }'>
+                    <source src="rtmp://0.0.0.0:1935/vod2/<?/*= $filename */?>" type='rtmp/mp4'/>
+                </video>-->
+
+
+                <video id="my_video_1" class="video-js vjs-default-skin vjs-big-play-centered videoplayer" width="100%" height="640px"
+                       controls preload="none" poster='videos/videopics/<?= $pic ?>'
+                       data-setup='{ "playbackRates": [1, 1.5, 2] }'>
+                    <source src="rtmp://0.0.0.0:1935/vod2/<?= $filename ?>" type='rtmp/mp4' />
+                    <!--<source src="http://vjs.zencdn.net/v/oceans.webm" type='video/webm' />-->
+                </video>
+            </div>
+
+            <div class="panel-body">
+
+
+                <hr/>
+                <div class="panel-video">
+                    <div class="child">
+                        <div class="childinner"><h4><b><?= $title ?></b> (<?= $duration ?>) </h4></div>
+                    </div>
+
+                    <div class="child">
+                        <div class="childinner views"><h3 style="color:#3875D7;"><?= $views ?> views</h3></div>
+                    </div>
+
+                </div>
+
+                <div class="likes_section">
+                    <div class="likes">
+                        <button class="btn likeBtn" id="likebutton">Like <span class="glyphicon glyphicon-heart "></span></button>
                     </div>
                 </div>
 
 
 
-                <?php
-
-            ?>
-
-
+                <p><?= $description ?></p>
+                </hr>
+            </div>
+            <div class="panel-footer text-center">
+                <a href="https://www.facebook.com/sharer/sharer.php?u=https://hub.docker.com/r/vignatjevs/nginx-php5-fpm-xdebug-ffmpeg/"><span
+                        class="fa fa-facebook"></span></a>
+                <a href="https://twitter.com/home?status=https%3A//hub.docker.com/r/vignatjevs/nginx-php5-fpm-xdebug-ffmpeg/"><span
+                        class="fa fa-twitter"></span></a>
+            </div>
         </div>
+
+
+        <?php
+
+        ?>
 
 
     </div>
-
-    <!-- footer -->
-
-    <div class="container text-center footer-streamflix">
-        <hr/>
-        <div class="row">
-            <div class="col-lg-12">
-                <div class="col-md-3">
-                    <ul class="nav nav-pills nav-stacked">
-                        <li><a href="/main.php">Home</a></li>
-                        <li><a href="https://github.com/VladislavsIgnatjevs">About us</a></li>
-                    </ul>
-                </div>
-                <div class="col-md-3">
-                    <ul class="nav nav-pills nav-stacked">
-                        <li><a href="mailto:v.ignatjevs@dundee.ac.ru">Contact</a></li>
-                        <li><a href="#">Presentations</a></li>
-                    </ul>
-                </div>
-                <div class="col-md-3">
-                    <ul class="nav nav-pills nav-stacked">
-                        <li><a href="https://hub.docker.com/r/vignatjevs/streamflix/">Docker Hub</a></li>
-                        <li><a href="https://github.com/VladislavsIgnatjevs/streamflix">GitHub</a></li>
-                    </ul>
-                </div>
-                <div class="col-md-3">
-                    <ul class="nav nav-pills nav-stacked">
-                        <li><a href="https://hub.docker.com/r/vignatjevs/streamflix/">Docker Hub</a></li>
-                        <li><a href="https://github.com/VladislavsIgnatjevs/streamflix">GitHub</a></li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-        <hr>
-        <div class="row">
-            <div class="col-lg-12">
-                <ul class="nav nav-pills nav-justified">
-                    <li><a href="/">© 2017 <b>Stream</b>Flix.</a></li>
-                    <li><a href="#">Terms of Service</a></li>
-                    <li><a href="#">Privacy</a></li>
-                </ul>
-            </div>
-        </div>
-    </div>
-
-    <!-- .wrapper -->
 </div>
+
+<!-- footer -->
+
+
+<?php
+require_once 'core/include/html_footer.php'
+?>
 
