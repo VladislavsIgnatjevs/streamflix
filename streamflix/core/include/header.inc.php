@@ -8,7 +8,7 @@
 //error_reporting(E_ALL);
 //ini_set('display_errors', 'on');
 
-require 'vendor/autoload.php';
+require '/vendor/autoload.php';
 require_once "classes/Db.php";
 require_once "classes/User.php";
 require_once "classes/Video.php";

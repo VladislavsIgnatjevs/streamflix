@@ -13,23 +13,25 @@ require_once 'core/include/header.html.php';
 
 if (!empty($_REQUEST['video_id'])) {
     //get video
-    $mongo = new StreamflixMongo();
-    $mongo->selectCollection('videos');
-    $collection = $mongo->collection;
-    $video = $collection->findOne(['_id' => new MongoId(trim($_REQUEST['video_id']))]);
+    $client = new MongoDB\Client('mongodb://mongodb_streamflix');
+    $collection = $client->streamflixmongodb->videos;
+
+    $video = $collection->findOne(['_id' => new MongoDB\BSON\ObjectID(trim($_REQUEST['video_id']))]);
     $filename = $video['filename'];
     $title = $video['title'];
     $views = $video['views'];
     $duration = gmdate("H:i:s", $video['duration']);
     $description = $video['description'];
     $pic = str_replace('.mp4', '.jpg', $filename);
+
+
     if (empty($views)) {
         $views = 1;
 
-        $collection->update(['_id' => new MongoId(trim($_REQUEST['video_id']))],['$set' => ['views'=>$views]]);
+        $collection->updateOne(['_id' => new MongoDB\BSON\ObjectID(trim($_REQUEST['video_id']))],['$set' => ['views'=>$views]]);
     } else {
         $views = $views+1;
-        $collection->update(['_id' => new MongoId(trim($_REQUEST['video_id']))],['$set' => ['views'=>$views]]);
+        $collection->updateOne(['_id' => new MongoDB\BSON\ObjectID(trim($_REQUEST['video_id']))],['$set' => ['views'=>$views]]);
     }
 
 
@@ -51,73 +53,9 @@ if (!empty($_REQUEST['video_id'])) {
 <script src="http://vjs.zencdn.net/4.11/video.js"></script>
 <script src="js/likes.js"></script>
 
-<div class="wrapper">
-    <div class="container">
-        <div class="row">
-            <div class="col-md-12">
-                <header id="header">
-
-                    <div class="slider">
-                        <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
-                            <!-- Wrapper for slides -->
-                            <div class="carousel-inner" role="listbox">
-                                <div class="item active">
-                                    <img src="http://placehold.it/1200x400/B70700/1E1A1A&text=StreamFlix">
-                                </div>
-                                <div class="item">
-                                    <img
-                                        src="http://placehold.it/1200x400/660000/660000&text=a Smarter way to watch videos">
-                                </div>
-                            </div>
-
-                            <!-- Controls -->
-                            <a class="left carousel-control" href="#carousel-example-generic" role="button"
-                               data-slide="prev">
-                                <span class="fa fa-angle-left" aria-hidden="true"></span>
-                                <span class="sr-only">Previous</span>
-                            </a>
-                            <a class="right carousel-control" href="#carousel-example-generic" role="button"
-                               data-slide="next">
-                                <span class="fa fa-angle-right" aria-hidden="true"></span>
-                                <span class="sr-only">Next</span>
-                            </a>
-                        </div>
-                    </div><!--slider-->
-                    <nav class="navbar navbar-default">
-                        <!-- Brand and toggle get grouped for better mobile display -->
-                        <div class="navbar-header">
-
-                            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
-                                    data-target="#mainNav">
-                                <span class="sr-only">Toggle navigation</span>
-                                <span class="icon-bar"></span>
-                                <span class="icon-bar"></span>
-                                <span class="icon-bar"></span>
-                            </button>
-                            <span class="site-name"><b>Stream</b>Flix</span>
-                            <span class="site-description">Explore the world of videos</span>
-                        </div>
-
-                        <!-- Collect the nav links, forms, and other content for toggling -->
-                        <div class="collapse navbar-collapse" id="mainNav">
-                            <ul class="nav main-menu navbar-nav">
-                                <li><a href="/main.php"><i class="fa fa-play"></i> Explore</a></li>
-                                <li><a href="/main.php?featured=true"><i class="fa fa-star"></i> Featured</a></li>
-                                <li><a href="/main.php?favourites=true"><i class="fa fa-heart"></i> Loved</a></li>
-                            </ul>
-
-                            <ul class="nav  navbar-nav navbar-right">
-                                <li><a href="/main.php?profile=true"><i class="fa fa-user"></i> Profile</a></li>
-                                <li><a href="/main.php?logout=true"><i class="fa fa-sign-out"></i> Logout</a></li>
-                            </ul>
-                        </div><!-- /.navbar-collapse -->
-                    </nav>
-
-                </header><!--/#HEADER-->
-
-            </div>
-        </div>
-    </div>
+<?php
+require_once 'core/include/html_header.php';
+?>
 
     <!-- videos -->
 

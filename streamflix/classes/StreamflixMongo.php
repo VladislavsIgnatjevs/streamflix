@@ -27,11 +27,17 @@ class StreamflixMongo
 
 
     function Connect() {
-        $this->connection = new MongoClient('mongodb');
+        //use if installed mongo.so for php <= php-fpm 5.9
+        //$this->connection = new MongoClient('mongodb');
+        $this->connection  = (new MongoDB\Client('mongodb://mongodb_streamflix'));
+
     }
 
     function selectCollection($collection) {
-        $this->collection= new MongoCollection($this->connection->selectDB('streamflixmongodb'), trim($collection));
+
+        $this->collection = $this->connection->streamflixmongodb->$collection;
+        //use if installed mongo.so for php <= php-fpm 5.9
+        //$this->collection= new MongoCollection($this->connection->selectDB('streamflixmongodb'), trim($collection));
     }
 
 

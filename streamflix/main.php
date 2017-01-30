@@ -48,11 +48,12 @@ require_once 'core/include/html_header.php';
 
         foreach ($videos as $vid) {
 
-            $mongo = new StreamflixMongo();
-            $mongo->selectCollection('videos');
-            $collection = $mongo->collection;
-            $videodata = $collection->find(['filename' => trim($vid)]);
-            foreach ($videodata as $dat) {
+            $client = new MongoDB\Client('mongodb://mongodb_streamflix');
+            $collection = $client->streamflixmongodb->videos;
+            $output = $collection->find(['filename' => trim($vid)] );
+            $data = (iterator_to_array($output));
+            foreach ($data as $dat) {
+
                 $filename = $dat['filename'];
                 $title = $dat['title'];
                 $duration = gmdate("H:i:s", $dat['duration']);

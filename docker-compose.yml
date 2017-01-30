@@ -1,0 +1,90 @@
+version: '2'
+services:
+
+
+  #mysqlserver
+  streamflix-mysql-server:
+    image: 'centurylink/mysql'
+    environment:
+        - MYSQL_ROOT_PASSWORD=admin
+        - MYSQL_DATABASE=streamflix-db
+    volumes:
+        - ./mysqldb-files:/var/lib/mysql
+    ports:
+        - "3306:3306"
+        - "6603:3306"
+
+
+  #phpmyadmin
+  streamflix_admin:
+    image: 'phpmyadmin/phpmyadmin'
+    links:
+        - streamflix-mysql-server:db
+    ports:
+        - "8080:80"
+    depends_on:
+        - streamflix-mysql-server
+
+  #mongodb
+  mongodb_streamflix:
+    image: 'tutum/mongodb'
+    volumes:
+        - ./mongodb-files:/var/lib/mongodb
+    ports:
+        - "27017:27017"
+        - "28017:28017"
+    environment:
+        - MONGODB_PASS="streamflix"
+
+  #videoserver
+  videoserver:
+    image: 'vignatjevs/nginx-rtmp'
+    volumes:
+        - ./nginx-videoserver/www:/var/www
+        - ./nginx-videoserver/mp4:/var/mp4s
+    command: /usr/local/nginx-streaming/sbin/nginx
+
+  #composer
+  composer:
+    image: "composer"
+    volumes:
+        - ./composer:/app
+    command: composer install --ignore-platform-reqs --no-scripts
+    links:
+        - streamflix:streamflix
+
+  #php-fpm
+  streamflix-php-fpm:
+    build:
+      context: ./docker-php-fpm-vignatjevs
+    volumes:
+        - ./streamflix:/var/www/html
+        - ./nginx-videoserver/mp4:/var/www/html/videos/
+        - ./nginx-videoserver/mp4pics:/var/www/html/videos/videopics
+        - ./docker-php-fpm-vignatjevs/php-fpm:/bitnami/php-fpm
+    links:
+        - mongodb_streamflix:mongodb_streamflix
+        - videoserver:videoserver
+        - streamflix-mysql-server:streamflix-mysql-server
+
+  #streamflix
+  streamflix:
+    build:
+      context: ./docker-nginx
+    ports:
+        - "8082:80"
+    volumes:
+        - ./streamflix:/var/www/html
+        - ./nginx-videoserver/mp4:/var/www/html/videos/mp4
+        - ./nginx-videoserver/mp4pics:/var/www/html/videos/videopics
+        - ./composer:/composer
+    links:
+        - mongodb_streamflix:mongodb_streamflix
+        - videoserver:videoserver
+        - streamflix-mysql-server:streamflix-mysql-server
+        - streamflix-php-fpm:streamflix-php-fpm
+    depends_on:
+        - streamflix-php-fpm
+        - streamflix-mysql-server
+        - mongodb_streamflix
+        - videoserver

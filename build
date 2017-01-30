@@ -1,0 +1,24 @@
+#!/bin/bash
+
+#stop and remove if existing
+docker stop streamflix-mysql-server streamflix_admin mongodb_streamflix videoserver composer streamflix-php-fpm streamflix
+
+docker rm streamflix-mysql-server streamflix_admin mongodb_streamflix videoserver composer streamflix-php-fpm streamflix
+
+#build if changed
+cd ./docker-php-fpm-vignatjevs
+docker build . --tag="vignatjevs/php-fpm"
+cd ../docker-nginx
+docker build . --tag="vignatjevs/nginx"
+
+cd ../
+ls -l
+
+#run
+docker run -d -v $PWD/mysqldb-files:/var/lib/mysql --name streamflix-mysql-server -p 3306:3306 -e MYSQL_ROOT_PASSWORD=admin -e MYSQL_DATABASE=streamflix-db --publish 6603:3306 centurylink/mysql
+docker run --name streamflix_admin -d --link streamflix-mysql-server:db -p 8080:80 phpmyadmin/phpmyadmin
+docker run -d -p 27017:27017 -p 28017:28017 --name mongodb_streamflix -v $PWD/mongodb-files:/var/lib/mongodb -v $PWD/mongodb-database/db:/data/db -e MONGODB_PASS="streamflix" tutum/mongodb mongod --smallfiles
+docker run -d -p 1935:1935 -p 80:80 --name videoserver -v $PWD/nginx-videoserver/mp4:/var/mp4s -v $PWD/nginx-videoserver/www:/var/www vignatjevs/nginx-rtmp /usr/local/nginx-streaming/sbin/nginx
+docker run -d --name composer -v $PWD/streamflix/composer:/app composer install --ignore-platform-reqs --no-scripts
+docker run -d --name streamflix-php-fpm  -v $PWD/php-fpm:/bitnami/php-fpm -v $PWD/streamflix:/var/www/html -v $PWD/nginx-videoserver/mp4:/var/www/html/videos/mp4 -v $PWD/nginx-videoserver/mp4pics:/var/www/html/videos/videopics -v $PWD/composer:/composer  --link streamflix-mysql-server:streamflix-mysql-server --link mongodb_streamflix:mongodb_streamflix --link videoserver:videoserver   vignatjevs/php-fpm
+docker run --name streamflix  -d -P -p 8082:80 -v $PWD/streamflix:/var/www/html -v $PWD/nginx-videoserver/mp4:/var/www/html/videos/mp4 -v $PWD/nginx-videoserver/mp4pics:/var/www/html/videos/videopics --link streamflix-mysql-server:streamflix-mysql-server --link mongodb_streamflix:mongodb_streamflix --link videoserver:videoserver --link streamflix-php-fpm:streamflix-php-fpm -v $PWD/composer:/composer vignatjevs/nginx

@@ -20,6 +20,7 @@
    $person->id = "4";		
    $person->Find();
 
+
    d($person->Firstname, "Person->Firstname");
    d($person->Age, "Person->Age");
 

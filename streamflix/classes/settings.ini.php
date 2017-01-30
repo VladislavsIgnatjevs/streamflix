@@ -1,6 +1,6 @@
 ;<?php return; ?>
 [SQL]
-host = mysqldb
+host = streamflix-mysql-server
 user = root
 password = admin
 dbname = streamflix-db

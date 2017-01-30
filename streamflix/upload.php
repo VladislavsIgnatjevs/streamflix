@@ -32,7 +32,7 @@ if (!empty($_REQUEST['file_name']) && !empty($_REQUEST['video_title'])) {
     $mongo = new StreamflixMongo();
     $mongo->selectCollection('videos');
     $collection=$mongo->collection;
-    $collection->insert($video);
+    $collection->insertOne($video);
 
 
 }
