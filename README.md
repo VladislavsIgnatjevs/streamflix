@@ -6,7 +6,7 @@ StremFlix - dockerized streaming application
 consists of:
 
 1. [Nginx for Frontend](https://hub.docker.com/r/vignatjevs/nginx/)
-2  [Custom PHP7.0-FPM] (please use Dockerfile under <b>docker-php-fpm-vignatjevs</b>)
+2.  [Custom PHP7.0-FPM] - please use Dockerfile under <b>docker-php-fpm-vignatjevs</b> dir
 3. [MongoDB ](https://hub.docker.com/r/tutum/mongodb/)
 4. [PHPMyAdmin ](https://hub.docker.com/r/phpmyadmin/phpmyadmin)
 5. [MySQL Server](https://hub.docker.com/r/centurylink/mysql)
