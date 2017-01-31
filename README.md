@@ -4,18 +4,21 @@ DevOps assignment 2016/2017
 StremFlix - dockerized streaming application
 
 consists of:
+
 1. [Nginx for Frontend](https://hub.docker.com/r/vignatjevs/nginx/)
-2  [Custom PHP7.0-FPM] (please use Dockerfile under <b>docker-php-fpm-vignatjevs</b>)
+2.  [Custom PHP7.0-FPM] - please use Dockerfile under <b>docker-php-fpm-vignatjevs</b> dir
 3. [MongoDB ](https://hub.docker.com/r/tutum/mongodb/)
 4. [PHPMyAdmin ](https://hub.docker.com/r/phpmyadmin/phpmyadmin)
 5. [MySQL Server](https://hub.docker.com/r/centurylink/mysql)
 6. [NGINX+rtmp](https://hub.docker.com/r/vignatjevs/nginx-rtmp/)
 7. [Composer](https://hub.docker.com/_/composer/)
 
-There are 2 ways to run this StreamFlix.
-1 way would be to run nginx with php5-fpm under one container, the other way is more favorable. You can run PHP7.0-fpm and nginx as separate container.
+There are 2 ways to run <b>Stream</b>Flix.
+One way would be to run nginx with php5-fpm under one container, the other way is more favorable. 
 
-This is the easiest option, to do this, cd to repo dir and run
+You can run PHP7.0-fpm and nginx as separate container!
+
+This is the easiest option, to do this, cd to repo dir and run:
 
 ```
 ./build
@@ -28,10 +31,9 @@ The project has docker-compose.yml but unfortunately it is <b>not working due to
 
 -----
 -----
------
------
 
 <b>Running with PHP5-FPM:</b>
+(if you want to run php-fpm and nginx under one container)
 
 Pull everything below. Comment php7 code blocks and uncomment php 5 code blocks.
 There are certain files that are completely changed:
@@ -96,7 +98,7 @@ And finally, the site
   docker run --name streamflix -d -P -p 8082:80 -v $PWD/streamflix:/var/www/html -v $PWD/nginx-videoserver/mp4:/var/www/html/videos/mp4 -v $PWD/nginx-videoserver/mp4pics:/var/www/html/videos/videopics  --link streamflix-mysql-server:streamflix-mysql-server —link mongodb_streamflix:mongodb_streamflix --link videoserver:videoserver vignatjevs/nginx-php5-fpm-xdebug-ffmpeg
 ```
 With such a setup as above, the main app can be accessed through <b>localhost:8082</b>, videoserver - <b>localhost:80</b>, PHPMyAdmin - <b>localhost:8080</b>.
-Thanks to linking container available, we can access all the containers from StreamFlix if needed - either by shared volumes or using links: <b>'mongodb'</b>, <b>'mysqldb'</b>, <b>'videoserver'</b>. Also, phpmyadmin is connected to MySQL server through link <b>'db'</b>
+Thanks to linking container available, we can access all the containers from StreamFlix if needed - either by shared volumes or using links: <b>'mongodb_streamflix'</b>, <b>'streamflix-mysql-server'</b>, <b>'videoserver'</b>. Also, phpmyadmin is connected to MySQL server through link <b>'db'</b>
 
 I understand that I could use an opportunity of proper frameworks for my front, but this was not the task this time, although I spend quite a long times making site to look as it is.
 Good luck and enjoy.
