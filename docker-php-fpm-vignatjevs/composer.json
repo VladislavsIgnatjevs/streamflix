@@ -1,0 +1,6 @@
+{
+    "require": {
+        "php-ffmpeg/php-ffmpeg": "^0.7.0",
+        "mongodb/mongodb": ">0"
+    }
+}
